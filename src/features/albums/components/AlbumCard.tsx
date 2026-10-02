@@ -18,7 +18,7 @@ export function AlbumCard({ album, width }: { album: AlbumSummary; width: number
   const pending = album.status === 'pending';
   const range = formatDateRange(album.start_date, album.end_date);
   const href = pending ? (`/waiting/${album.id}` as const) : (`/album/${album.id}` as const);
-  const mosaicH = Math.round(width * 0.62);
+  const mosaicH = Math.round(width * (album.cover.length ? 0.62 : 0.36));
 
   const meta = [range, pending ? null : t('common.items', { count: album.item_count })].filter(Boolean).join(' · ');
 

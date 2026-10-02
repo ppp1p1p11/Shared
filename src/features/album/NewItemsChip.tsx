@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 
 import { Icon } from '@/components/ui/Icon';
 import { PressableScale } from '@/components/ui/PressableScale';
@@ -8,12 +8,13 @@ import { useColors } from '@/theme/ThemeProvider';
 import { elevation, radius, space } from '@/theme/tokens';
 
 /** "12 new from Ana": a calm chip, never a badge. */
-export function NewItemsChip({ label, top, onPress }: { label: string; top: number; onPress: () => void }) {
+/** Sits in the thumb zone, above the upload pill. */
+export function NewItemsChip({ label, bottom, onPress }: { label: string; bottom: number; onPress: () => void }) {
   const c = useColors();
   return (
-    <Animated.View entering={FadeInUp.springify().damping(18)} exiting={FadeOutUp.duration(160)} style={[styles.wrap, { top }]} pointerEvents="box-none">
+    <Animated.View entering={FadeInDown.springify().damping(18)} exiting={FadeOutDown.duration(160)} style={[styles.wrap, { bottom }]} pointerEvents="box-none">
       <PressableScale onPress={onPress} accessibilityRole="button" accessibilityLabel={label} accessibilityLiveRegion="polite" style={[styles.chip, elevation.floating, { backgroundColor: c.accent }]}>
-        <Icon name="arrowUp" size={16} rawColor={c.onAccent} strokeWidth={2.25} />
+        <Icon name="sparkles" size={16} rawColor={c.onAccent} strokeWidth={2.25} />
         <Text variant="subhead" weight="600" style={{ color: c.onAccent }}>
           {label}
         </Text>

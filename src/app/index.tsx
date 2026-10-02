@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -33,7 +33,8 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
 
   const contentWidth = Math.min(width, layout.maxContentWidth + layout.gutter * 2) - layout.gutter * 2;
-  const list = albums.data ?? [];
+  // Active albums first (most recent activity, from the server); pending requests after them.
+  const list = useMemo(() => [...(albums.data ?? [])].sort((a, b) => Number(a.status === 'pending') - Number(b.status === 'pending')), [albums.data]);
   const isEmpty = albums.isSuccess && list.length === 0;
   const showNudge = auth.isAnonymous && !nudgeDismissed && list.filter((a) => a.status === 'active').length >= 2;
 
@@ -49,7 +50,7 @@ export default function Home() {
     <View style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={{ paddingTop: insets.top + space[2], paddingBottom: bottomBarH + space[6], alignItems: 'center' }}
+        contentContainerStyle={{ paddingTop: insets.top + space[2], paddingBottom: bottomBarH + space[6], alignItems: 'center', flexGrow: 1 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={c.textTertiary} />}
       >
         <View style={[styles.header, { width: contentWidth }]}>
@@ -59,7 +60,7 @@ export default function Home() {
           <IconButton icon="more" variant="filled" label={t('settings.title')} onPress={() => router.push('/settings')} testID="open-settings" />
         </View>
 
-        <View style={{ width: contentWidth, gap: space[5] }}>
+        <View style={{ width: contentWidth, gap: space[5], flexGrow: isEmpty ? 1 : 0, justifyContent: isEmpty ? 'center' : 'flex-start', paddingBottom: isEmpty ? space[16] : 0 }}>
           {showNudge && (
             <Banner
               icon="shield"

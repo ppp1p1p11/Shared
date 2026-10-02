@@ -2,7 +2,7 @@ import { FlashList, type FlashListRef } from '@shopify/flash-list';
 import { useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import { Platform, StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -386,10 +386,10 @@ export default function AlbumScreen() {
             action={<Button size="sm" variant="tinted" label={t('album.seePlans')} onPress={() => router.push('/paywall')} />}
           />
         )}
-        {a?.start_date && !suggestionHandled && suggestCount !== 0 && (
+        {Platform.OS !== 'web' && a?.start_date && !suggestionHandled && suggestCount !== 0 && (
           <Banner
             icon="sparkles"
-            title={suggestCount ? t('upload.suggestionTitle', { count: suggestCount, range: rangeLabel }) : t('upload.fromDates') + (rangeLabel ? ` · ${rangeLabel}` : '')}
+            title={suggestCount ? t('upload.suggestionTitle', { count: suggestCount, range: rangeLabel }) : t('upload.suggestionTitleNoCount', { range: rangeLabel })}
             onDismiss={() => setPrefs({ suggestionHandled: { ...usePrefs.getState().suggestionHandled, [id]: true } })}
             dismissLabel={t('common.notNow')}
             action={<Button size="sm" variant="tinted" icon="addPhoto" label={t('upload.choosePhotos')} onPress={() => router.push({ pathname: '/album/[id]/upload', params: { id, mode: 'range' } })} />}
@@ -464,7 +464,7 @@ export default function AlbumScreen() {
       {fresh.length > 0 && !selecting && viewerIndex === null && (
         <NewItemsChip
           label={freshLabel}
-          top={listTop + 60}
+          bottom={Math.max(insets.bottom, space[3]) + 130}
           onPress={() => {
             const pos = grid.position.get(fresh[0].id);
             if (pos) listRef.current?.scrollToOffset({ offset: Math.max(0, listHeaderH + rowOffsets[pos.row] - H / 3), animated: true });

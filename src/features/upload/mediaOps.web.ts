@@ -149,7 +149,8 @@ export const mediaOps = {
   },
 
   previewUri(item: UploadItem): string {
-    return item.staged?.thumbUri ?? item.source.uri;
+    // The picker's blob URL stays valid for the session; switching sources would flash the tile.
+    return item.source.uri;
   },
 
   sourceAvailable(item: UploadItem): boolean {

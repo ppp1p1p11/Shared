@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -67,6 +68,12 @@ export const useUploads = create<QueueState>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.items = recoverAfterRestart(state.items);
+          // Web: picked files live only as long as the tab. Unfinished ones must be picked again.
+          if (Platform.OS === 'web') {
+            state.items = state.items.map((i) =>
+              i.state !== 'done' && i.state !== 'duplicate' && i.source.uri.startsWith('blob:') ? { ...i, state: 'failed', error: 'ROLO:source_lost' } : i,
+            );
+          }
           state.hydrated = true;
         }
         useUploads.setState({ hydrated: true });

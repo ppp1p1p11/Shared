@@ -11,10 +11,12 @@ export type TextFieldProps = TextInputProps & {
   error?: string | null;
   size?: 'lg' | 'md';
   trailing?: React.ReactNode;
+  /** 'raised' when the field sits on a surface-coloured card. */
+  tone?: 'surface' | 'raised';
 };
 
 export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField(
-  { label, hint, error, size = 'md', trailing, style, onFocus, onBlur, ...rest },
+  { label, hint, error, size = 'md', trailing, tone = 'surface', style, onFocus, onBlur, ...rest },
   ref,
 ) {
   const c = useColors();
@@ -30,7 +32,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
         style={[
           styles.box,
           {
-            backgroundColor: c.surface,
+            backgroundColor: tone === 'raised' ? c.bg : c.surface,
             borderColor: error ? c.danger : focused ? c.accent : 'transparent',
             minHeight: size === 'lg' ? 60 : 50,
           },

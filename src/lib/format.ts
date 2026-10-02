@@ -49,6 +49,9 @@ export function formatDateRange(start?: string | null, end?: string | null, loca
   return i18n.t('time.dateRange', { start: fmt.format(s), end: fmt.format(e) });
 }
 
+/** Sentence case: 'qui., 15 de jan.' → 'Qui., 15 de jan.' (title case would read 'De Jan.'). */
+export const capitalizeFirst = (s: string) => (s ? s[0].toLocaleUpperCase() + s.slice(1) : s);
+
 export function dayKey(d: Date): string {
   return toISODate(d);
 }
@@ -62,12 +65,14 @@ export function formatDayHeader(key: string, locale = currentLocale()): string {
   if (diff === 0) return i18n.t('album.today');
   if (diff === 1) return i18n.t('album.yesterday');
   const sameYear = d.getFullYear() === today.getFullYear();
-  return new Intl.DateTimeFormat(locale, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    ...(sameYear ? {} : { year: 'numeric' }),
-  }).format(d);
+  return capitalizeFirst(
+    new Intl.DateTimeFormat(locale, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      ...(sameYear ? {} : { year: 'numeric' }),
+    }).format(d),
+  );
 }
 
 export function formatDateTime(iso: string, locale = currentLocale()): string {

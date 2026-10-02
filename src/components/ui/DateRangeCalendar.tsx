@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { currentLocale } from '@/i18n';
 import { haptics } from '@/lib/haptics';
-import { parseLocalDate, toISODate } from '@/lib/format';
+import { capitalizeFirst, parseLocalDate, toISODate } from '@/lib/format';
 import { useColors } from '@/theme/ThemeProvider';
 import { radius, space } from '@/theme/tokens';
 import { IconButton } from './IconButton';
@@ -38,7 +38,7 @@ export function DateRangeCalendar({ value, onChange }: { value: Range; onChange:
     return out;
   }, [month]);
 
-  const title = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(month);
+  const title = capitalizeFirst(new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(month));
   const todayKey = toISODate(new Date());
 
   const pick = (d: Date) => {
@@ -55,7 +55,7 @@ export function DateRangeCalendar({ value, onChange }: { value: Range; onChange:
     <Animated.View entering={FadeIn.duration(200)} style={{ gap: space[2] }}>
       <View style={styles.nav}>
         <IconButton icon="back" size="sm" label="Previous month" onPress={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} />
-        <Text variant="headline" style={{ textTransform: 'capitalize' }} accessibilityLiveRegion="polite">
+        <Text variant="headline" accessibilityLiveRegion="polite">
           {title}
         </Text>
         <IconButton icon="chevron" size="sm" label="Next month" onPress={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} />

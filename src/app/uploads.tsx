@@ -81,7 +81,7 @@ function Row({ item }: { item: UploadItem }) {
     finalizing: t('queue.stateFinishing'),
     done: t('queue.stateDone'),
     duplicate: t('queue.stateDuplicate'),
-    failed: t('queue.stateFailed'),
+    failed: item.error?.includes('source_lost') ? t('queue.stateSourceLost') : t('queue.stateFailed'),
     paused_quota: t('queue.statePausedQuota'),
   }[item.state];
   const tone = item.state === 'failed' || item.state === 'paused_quota' ? 'warning' : item.state === 'done' ? 'success' : 'textSecondary';
@@ -106,7 +106,9 @@ function Row({ item }: { item: UploadItem }) {
           </View>
         )}
       </View>
-      {item.state === 'failed' ? (
+      {item.state === 'failed' && item.error?.includes('source_lost') ? (
+        <IconButton icon="close" size="sm" color="textTertiary" label={t('common.remove')} onPress={() => useUploads.getState().remove(item.id)} />
+      ) : item.state === 'failed' ? (
         <IconButton icon="refresh" size="sm" label={t('common.retry')} onPress={() => useUploads.getState().patch(item.id, { state: 'queued', attempts: 0, error: undefined, nextAttemptAt: undefined })} />
       ) : item.state !== 'done' && item.state !== 'duplicate' ? (
         <IconButton icon="close" size="sm" color="textTertiary" label={t('queue.cancelItem')} onPress={() => cancelUpload(item.id)} />

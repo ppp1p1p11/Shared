@@ -76,16 +76,22 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
     "web": "expo start --web",
-    "lint": "expo lint",
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset",
+    "seed": "tsx scripts/seed.ts",
+    "seed:5k": "tsx scripts/seed.ts --count 5000",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p tests/server",
     "test": "jest",
     "test:server": "tsx --test tests/server/*.test.ts",
-    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p tests/server",
-    "e2e:web": "node scripts/e2e-web.mjs"
+    "web:serve": "./scripts/web-build-serve.sh dist-web",
+    "e2e:web": "node scripts/e2e-web.mjs && node scripts/e2e-media.mjs && node scripts/e2e-settings.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "perf:grid": "node scripts/perf-grid.mjs",
+    "lint": "expo lint"
   },
   "private": true,
   "jest": {

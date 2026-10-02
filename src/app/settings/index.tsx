@@ -92,6 +92,7 @@ export default function Settings() {
                 maxLength={40}
                 autoCapitalize="words"
                 returnKeyType="done"
+                tone="raised"
                 testID="settings-name"
               />
             </View>
@@ -101,7 +102,7 @@ export default function Settings() {
             <ListRow
               icon={auth.isAnonymous ? 'smartphone' : 'shield'}
               title={auth.isAnonymous ? t('settings.accountAnonymous') : t('settings.accountLinked', { id: accountId })}
-              value={auth.isAnonymous ? t('settings.linkAccount') : undefined}
+              subtitle={auth.isAnonymous ? t('settings.linkAccount') : undefined}
               onPress={() => router.push('/settings/account')}
               chevron
               testID="settings-account"

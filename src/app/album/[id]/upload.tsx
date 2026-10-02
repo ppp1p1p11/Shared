@@ -228,7 +228,7 @@ export default function UploadReview() {
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: space[2], width: '100%', maxWidth: 520 }}>
-            <Button label={t('upload.chooseOther')} variant="secondary" size="md" onPress={openPicker} style={{ flex: 1 }} />
+            <Button label={t('upload.libraryShort')} icon="album" variant="secondary" size="md" onPress={openPicker} style={{ flex: 1 }} />
             <Button testID="upload-submit" label={t('upload.addCta', { count: chosen.length })} size="md" onPress={submit} disabled={!chosen.length} style={{ flex: 1.3 }} />
           </View>
         </View>

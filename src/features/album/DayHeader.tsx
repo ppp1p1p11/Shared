@@ -18,7 +18,7 @@ export const DayHeader = memo(function DayHeader({ day, count, sticky }: { day: 
         { backgroundColor: sticky ? (scheme === 'dark' ? 'rgba(0,0,0,0.88)' : 'rgba(255,255,255,0.92)') : colors.bgPhoto === '#000000' ? colors.bg : colors.bg },
       ]}
     >
-      <Text variant="headline" style={{ textTransform: 'capitalize' }}>
+      <Text variant="headline">
         {formatDayHeader(day)}
       </Text>
       <Text variant="footnote" color="textTertiary">

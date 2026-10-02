@@ -9,22 +9,27 @@ import type { Media } from '@/lib/types';
 export const MEDIA_COLUMNS =
   'id,album_id,uploader_id,kind,storage_path,thumb_path,preview_path,thumbhash,mime_type,width,height,duration_ms,size_bytes,live_photo_video_path,original_filename,captured_at,status,created_at';
 
-/** All visible media for an album (RLS decides what "visible" means), paged in 1,000-row pages. */
+/** All visible media for an album (RLS decides what "visible" means). Pages of 1,000 fetched in parallel. */
 export async function fetchAlbumMedia(albumId: string): Promise<Media[]> {
-  const out: Media[] = [];
   const page = 1000;
-  for (let from = 0; ; from += page) {
-    const { data, error } = await supabase
+  const query = () =>
+    supabase
       .from('media')
-      .select(MEDIA_COLUMNS)
+      .select(MEDIA_COLUMNS, { count: 'exact' })
       .eq('album_id', albumId)
       .in('status', ['ready', 'hidden'])
       .order('captured_at', { ascending: false })
-      .order('id', { ascending: false })
-      .range(from, from + page - 1);
-    if (error) throw new Error(error.message);
-    out.push(...((data ?? []) as Media[]));
-    if (!data || data.length < page) break;
+      .order('id', { ascending: false });
+  const first = await query().range(0, page - 1);
+  if (first.error) throw new Error(first.error.message);
+  const total = first.count ?? first.data?.length ?? 0;
+  const rest = await Promise.all(
+    Array.from({ length: Math.max(0, Math.ceil(total / page) - 1) }, (_, i) => query().range((i + 1) * page, (i + 2) * page - 1)),
+  );
+  const out = [...((first.data ?? []) as Media[])];
+  for (const r of rest) {
+    if (r.error) throw new Error(r.error.message);
+    out.push(...((r.data ?? []) as Media[]));
   }
   return out;
 }
