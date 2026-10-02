@@ -222,9 +222,11 @@ web3 = 30
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
-double_confirm_changes = true
+# Anonymous users have no old address to confirm, so only the new one is verified.
+double_confirm_changes = false
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+# On: linking an email to an anonymous account is confirmed with a 6-digit code (same as production).
+enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
@@ -244,10 +246,18 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# Uncomment to customize email template
-# [auth.email.template.invite]
-# subject = "You have been invited"
-# content_path = "./supabase/templates/invite.html"
+# Rolo uses 6-digit codes (OTP) instead of links, for linking an email and for signing in on a new phone.
+[auth.email.template.email_change]
+subject = "Seu código do Rolo · Your Rolo code"
+content_path = "./supabase/templates/code.html"
+
+[auth.email.template.magic_link]
+subject = "Seu código do Rolo · Your Rolo code"
+content_path = "./supabase/templates/code.html"
+
+[auth.email.template.confirmation]
+subject = "Seu código do Rolo · Your Rolo code"
+content_path = "./supabase/templates/code.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]

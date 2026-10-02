@@ -373,6 +373,11 @@ const en = {
     about: 'About',
     version: 'Version {{version}}',
     privacyPromise: 'No ads. No feed. Your photos are only visible to people in the album.',
+    notifications: 'Notifications',
+    notificationsHint: 'Get a heads-up when uploads finish in the background.',
+    madeIn: 'Made with care in Rio de Janeiro',
+    deleting: 'Deleting your data…',
+    storageTotal: 'All your albums',
   },
   link: {
     title: 'Keep your albums',

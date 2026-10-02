@@ -370,6 +370,11 @@ const ptBR: Catalog = {
     about: 'Sobre',
     version: 'Versão {{version}}',
     privacyPromise: 'Sem anúncios. Sem feed. Suas fotos só aparecem para quem está no álbum.',
+    notifications: 'Notificações',
+    notificationsHint: 'Receba um aviso quando os envios terminarem em segundo plano.',
+    madeIn: 'Feito com carinho no Rio de Janeiro',
+    deleting: 'Apagando seus dados…',
+    storageTotal: 'Todos os seus álbuns',
   },
   link: {
     title: 'Guarde seus álbuns',
