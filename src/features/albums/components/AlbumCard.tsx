@@ -33,7 +33,7 @@ export function AlbumCard({ album, width }: { album: AlbumSummary; width: number
           members: t('common.members', { count: album.member_count }),
         })}
         accessibilityHint={pending ? t('home.pending') : undefined}
-        style={[styles.card, elevation.card, { backgroundColor: c.surfaceRaised, borderColor: c.separator }]}
+        style={StyleSheet.flatten([styles.card, elevation.card, { backgroundColor: c.surfaceRaised, borderColor: c.separator }])}
       >
         <Link.AppleZoom>
           <View style={{ height: mosaicH, opacity: pending ? 0.5 : 1 }}>

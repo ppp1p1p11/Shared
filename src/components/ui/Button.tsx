@@ -6,7 +6,7 @@ import { Icon, type IconName } from './Icon';
 import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'destructive' | 'onPhoto';
+type Variant = 'primary' | 'secondary' | 'tinted' | 'ghost' | 'destructive' | 'onPhoto';
 
 export type ButtonProps = {
   label: string;
@@ -39,6 +39,7 @@ export function Button({
   const palette: Record<Variant, { bg: string; fg: keyof typeof c }> = {
     primary: { bg: c.accent, fg: 'onAccent' },
     secondary: { bg: c.surface, fg: 'text' },
+    tinted: { bg: c.accentSoft, fg: 'accent' },
     ghost: { bg: 'transparent', fg: 'accent' },
     destructive: { bg: c.dangerSoft, fg: 'danger' },
     onPhoto: { bg: 'rgba(255,255,255,0.18)', fg: 'textInverse' },

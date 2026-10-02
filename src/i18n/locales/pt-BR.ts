@@ -83,6 +83,8 @@ const ptBR: Catalog = {
     to: 'Até',
     clearDates: 'Limpar datas',
     submit: 'Criar álbum',
+    yourName: 'Seu nome',
+    yourNameHint: 'Para a galera saber quem criou o álbum.',
     limitTitle: 'Você já usou os {{count}} álbuns grátis',
     limitBody: 'Apague um álbum antigo ou experimente o Rolo Plus para ter álbuns ilimitados.',
   },
@@ -143,6 +145,7 @@ const ptBR: Catalog = {
     approved: 'Você entrou!',
     declined: 'Seu pedido não foi aprovado.',
     cancelRequest: 'Cancelar pedido',
+    ownerFallback: 'O dono do álbum',
   },
   album: {
     everyone: 'Todo mundo',

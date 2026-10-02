@@ -86,6 +86,8 @@ const en = {
     to: 'To',
     clearDates: 'Clear dates',
     submit: 'Create album',
+    yourName: 'Your name',
+    yourNameHint: 'So people know who made the album.',
     limitTitle: 'You’ve used all {{count}} free albums',
     limitBody: 'Delete an old album or try Rolo Plus for unlimited albums.',
   },
@@ -146,6 +148,7 @@ const en = {
     approved: 'You’re in!',
     declined: 'Your request wasn’t approved.',
     cancelRequest: 'Cancel request',
+    ownerFallback: 'The album owner',
   },
   album: {
     everyone: 'Everyone',

@@ -67,7 +67,7 @@ export default function Home() {
               body={t('home.upgradeNudgeBody')}
               onDismiss={() => setPrefs({ upgradeNudgeDismissed: true })}
               dismissLabel={t('common.notNow')}
-              action={<Button size="sm" variant="secondary" label={t('home.upgradeNudgeCta')} onPress={() => router.push('/settings/account')} />}
+              action={<Button size="sm" variant="tinted" label={t('home.upgradeNudgeCta')} onPress={() => router.push('/settings/account')} />}
             />
           )}
 
