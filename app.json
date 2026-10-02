@@ -1,0 +1,103 @@
+{
+  "expo": {
+    "name": "Rolo",
+    "slug": "rolo",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "rolo",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#000000",
+    "locales": {
+      "pt-BR": "./locales/pt-BR.json",
+      "en": "./locales/en.json"
+    },
+    "ios": {
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "app.rolo.prototype",
+      "supportsTablet": true,
+      "associatedDomains": ["applinks:rolo.app"],
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true,
+        "CFBundleLocalizations": ["en", "pt-BR"],
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": { "NSAllowsLocalNetworking": true }
+      }
+    },
+    "android": {
+      "package": "app.rolo.prototype",
+      "adaptiveIcon": {
+        "backgroundColor": "#CC3D25",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": true,
+      "usesCleartextTraffic": true,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [{ "scheme": "https", "host": "rolo.app", "pathPrefix": "/j/" }],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "web": {
+      "output": "single",
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "name": "Rolo",
+      "shortName": "Rolo",
+      "themeColor": "#CC3D25",
+      "backgroundColor": "#FFFFFF"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76,
+          "dark": { "backgroundColor": "#000000", "image": "./assets/images/splash-icon.png" }
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Rolo lets you pick photos and videos to add to shared albums. It only uploads what you choose.",
+          "savePhotosPermission": "Rolo saves photos from your shared albums to your library, in original quality.",
+          "isAccessMediaLocationEnabled": true,
+          "preventAutomaticLimitedAccessAlert": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Rolo lets you pick photos and videos to add to shared albums. It only uploads what you choose.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Rolo uses the camera only to scan album invite QR codes.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": true
+        }
+      ],
+      ["expo-video", { "supportsBackgroundPlayback": false, "supportsPictureInPicture": false }],
+      "expo-background-task",
+      ["expo-notifications", { "color": "#CC3D25" }],
+      ["expo-secure-store", { "faceIDPermission": false }],
+      ["expo-localization", { "supportedLocales": { "ios": ["en", "pt-BR"], "android": ["en", "pt-BR"] } }]
+    ],
+    "experiments": {
+      "typedRoutes": false,
+      "reactCompiler": true
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "CFBundleDisplayName": "Rolo",
+  "NSPhotoLibraryUsageDescription": "O Rolo deixa você escolher fotos e vídeos para adicionar aos álbuns compartilhados. Só é enviado o que você escolher.",
+  "NSPhotoLibraryAddUsageDescription": "O Rolo salva as fotos dos seus álbuns compartilhados na sua galeria, em qualidade original.",
+  "NSCameraUsageDescription": "O Rolo usa a câmera só para ler QR codes de convite."
+}

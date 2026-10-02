@@ -1,0 +1,6 @@
+{
+  "CFBundleDisplayName": "Rolo",
+  "NSPhotoLibraryUsageDescription": "Rolo lets you pick photos and videos to add to shared albums. It only uploads what you choose.",
+  "NSPhotoLibraryAddUsageDescription": "Rolo saves photos from your shared albums to your library, in original quality.",
+  "NSCameraUsageDescription": "Rolo uses the camera only to scan album invite QR codes."
+}
