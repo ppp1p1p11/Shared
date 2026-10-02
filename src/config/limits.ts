@@ -17,6 +17,9 @@ export const UPLOAD = {
   backoffBaseMs: 1500,
   backoffMaxMs: 60_000,
   thumbWidth: 480,
+  /** Viewer rendition (JPEG). Originals are untouched; this only speeds up viewing and works on web. */
+  previewWidth: 1600,
+  previewQuality: 0.82,
   thumbQuality: 0.72,
   /** Bigger than this, we show "Wi-Fi recommended" in the review screen. */
   wifiRecommendedBytes: 500 * 1024 * 1024,

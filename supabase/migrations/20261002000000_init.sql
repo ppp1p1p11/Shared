@@ -133,6 +133,7 @@ create table public.media (
   kind                   public.media_kind not null,
   storage_path           text not null,
   thumb_path             text,
+  preview_path           text,            -- ~1600px JPEG for the viewer (fast, and displayable on web)
   thumbhash              text,
   mime_type              text not null,
   width                  int,
@@ -753,6 +754,7 @@ begin
       -- Resuming our own interrupted upload: hand back the same row/path.
       return jsonb_build_object(
         'media_id', v_existing.id, 'storage_path', v_existing.storage_path,
+        'thumb_path', v_existing.thumb_path, 'preview_path', v_existing.preview_path,
         'live_photo_video_path', v_existing.live_photo_video_path, 'resumed', true,
         'keep_location', v_album.keep_location
       );
@@ -768,10 +770,10 @@ begin
   v_base := 'albums/' || p_album_id || '/' || v_id || '/';
 
   insert into public.media (
-    id, album_id, uploader_id, kind, storage_path, thumb_path, mime_type, width, height, duration_ms,
+    id, album_id, uploader_id, kind, storage_path, thumb_path, preview_path, mime_type, width, height, duration_ms,
     size_bytes, live_photo_video_path, live_photo_size_bytes, content_hash, original_filename, captured_at
   ) values (
-    v_id, p_album_id, v_uid, p_kind, v_base || 'original.' || v_ext, v_base || 'thumb.jpg', p_mime_type,
+    v_id, p_album_id, v_uid, p_kind, v_base || 'original.' || v_ext, v_base || 'thumb.jpg', v_base || 'preview.jpg', p_mime_type,
     p_width, p_height, p_duration_ms, p_size_bytes,
     case when coalesce(p_live_photo_size_bytes, 0) > 0 then v_base || 'live.mov' end,
     coalesce(p_live_photo_size_bytes, 0), p_content_hash, left(p_original_filename, 255),
@@ -782,6 +784,7 @@ begin
     'media_id', v_id,
     'storage_path', v_base || 'original.' || v_ext,
     'thumb_path', v_base || 'thumb.jpg',
+    'preview_path', v_base || 'preview.jpg',
     'live_photo_video_path', case when coalesce(p_live_photo_size_bytes, 0) > 0 then v_base || 'live.mov' end,
     'keep_location', v_album.keep_location,
     'resumed', false
@@ -827,6 +830,11 @@ begin
   returning * into v_media;
 
   if not found then
+    -- Idempotent: a retry after the app died between "finalized" and "saved locally" succeeds.
+    select * into v_media from public.media where id = p_media_id and uploader_id = v_uid and status in ('ready', 'hidden');
+    if found then
+      return v_media;
+    end if;
     perform public.rolo_error('media_not_found');
   end if;
 
@@ -854,6 +862,15 @@ begin
    where id = p_media_id and status in ('ready', 'hidden');
 end $$;
 
+-- ───────────────────────────────────────────────────────────── mock billing (PROTOTYPE ONLY)
+-- Stands in for a real purchase flow (StoreKit / Play Billing + server-side receipt validation).
+-- In production the plan is set only by a webhook from the billing provider, never by the client.
+create or replace function public.mock_set_plan(p_plan public.plan_tier)
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  update public.profiles set plan = p_plan where id = public.require_user();
+end $$;
+
 -- ───────────────────────────────────────────────────────────── account deletion (LGPD / GDPR)
 -- Deletes the auth user; cascades remove profile, owned albums (with all their media rows),
 -- memberships and the user's uploads everywhere. The client removes the storage objects first
@@ -870,7 +887,7 @@ end $$;
 -- Storage paths the client must remove before calling delete_my_data().
 create or replace function public.my_data_storage_paths()
 returns setof text language sql stable security definer set search_path = '' as $$
-  select unnest(array[m.storage_path, m.thumb_path, m.live_photo_video_path])
+  select unnest(array[m.storage_path, m.thumb_path, m.preview_path, m.live_photo_video_path])
   from public.media m
   join public.albums a on a.id = m.album_id
   where m.uploader_id = (select auth.uid()) or a.owner_id = (select auth.uid());
@@ -899,7 +916,8 @@ grant execute on function
   public.finalize_upload(uuid, text, int, int),
   public.set_media_hidden(uuid, boolean),
   public.delete_my_data(),
-  public.my_data_storage_paths()
+  public.my_data_storage_paths(),
+  public.mock_set_plan(public.plan_tier)
 to authenticated;
 
 -- Helpers used inside RLS policies must be executable by the querying role.
@@ -958,7 +976,7 @@ create policy "media: uploader writes reserved path" on storage.objects
         and m.album_id = public.album_id_from_path(name)
         and m.uploader_id = (select auth.uid())
         and m.status in ('uploading', 'processing')
-        and name in (m.storage_path, m.thumb_path, m.live_photo_video_path)
+        and name in (m.storage_path, m.thumb_path, m.preview_path, m.live_photo_video_path)
         and public.is_active_member(m.album_id)
     )
   );

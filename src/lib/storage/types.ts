@@ -29,7 +29,7 @@ export interface StorageProvider {
   }): Promise<number>;
   uploadSmall(p: { path: string; body: ChunkBody; contentType: string }): Promise<void>;
   /** Synchronous display source for thumbnails/originals (native). */
-  imageSource(path: string): ImageSourceSpec | null;
+  imageSource(path: string, token?: string): ImageSourceSpec | null;
   /** Short-lived URL to fetch the original bytes (saving to device, video playback). */
   downloadUrl(path: string, expiresInSeconds?: number): Promise<string>;
   downloadUrls(paths: string[], expiresInSeconds?: number): Promise<Record<string, string>>;

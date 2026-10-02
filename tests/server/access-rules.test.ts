@@ -286,6 +286,13 @@ describe('media & storage', () => {
     assert.equal((await dl.data!.arrayBuffer()).byteLength, 3);
   });
 
+  it('finalize is idempotent for the uploader (safe to retry after a crash)', async () => {
+    const up = await uploadPhoto(member, album.id);
+    const again = await rpc(member, 'finalize_upload', { p_media_id: up.media_id });
+    assert.equal(again.status, 'ready');
+    assert.match(String(await rpcError(other, 'finalize_upload', { p_media_id: up.media_id })), /media_not_found/);
+  });
+
   it('only reserved paths are writable, and only by the uploader', async () => {
     const r = await beginUpload(member, album.id);
     // someone else writing into the reserved path

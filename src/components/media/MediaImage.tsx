@@ -45,6 +45,8 @@ export const MediaImage = memo(function MediaImage({
         priority={priority}
         recyclingKey={recyclingKey}
         cachePolicy="memory-disk"
+        // Web: the list is already virtualized; lazy <img> loading can stall the placeholder → image swap.
+        loading="eager"
         style={StyleSheet.absoluteFill}
         accessible={!!accessibilityLabel}
         accessibilityLabel={accessibilityLabel}

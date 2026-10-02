@@ -11,6 +11,8 @@ type PrefsState = {
   /** Last name typed when joining, prefilled next time (device-local). */
   lastDisplayName: string;
   wifiOnlyUploads: boolean;
+  /** Grid density (photos per row), remembered across albums. */
+  gridColumns: number;
   /** Account-upgrade nudge was dismissed (shown only after 2+ albums). */
   upgradeNudgeDismissed: boolean;
   /** Album ids for which the 80% storage heads-up was already shown. */
@@ -27,6 +29,7 @@ export const usePrefs = create<PrefsState>()(
       language: 'auto',
       lastDisplayName: '',
       wifiOnlyUploads: false,
+      gridColumns: 3,
       upgradeNudgeDismissed: false,
       storageWarned: {},
       suggestionHandled: {},

@@ -16,12 +16,19 @@
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "app.rolo.prototype",
       "supportsTablet": true,
-      "associatedDomains": ["applinks:rolo.app"],
+      "associatedDomains": [
+        "applinks:rolo.app"
+      ],
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
-        "CFBundleLocalizations": ["en", "pt-BR"],
+        "CFBundleLocalizations": [
+          "en",
+          "pt-BR"
+        ],
         "ITSAppUsesNonExemptEncryption": false,
-        "NSAppTransportSecurity": { "NSAllowsLocalNetworking": true }
+        "NSAppTransportSecurity": {
+          "NSAllowsLocalNetworking": true
+        }
       }
     },
     "android": {
@@ -38,8 +45,17 @@
         {
           "action": "VIEW",
           "autoVerify": true,
-          "data": [{ "scheme": "https", "host": "rolo.app", "pathPrefix": "/j/" }],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "data": [
+            {
+              "scheme": "https",
+              "host": "rolo.app",
+              "pathPrefix": "/j/"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -60,7 +76,10 @@
           "backgroundColor": "#FFFFFF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76,
-          "dark": { "backgroundColor": "#000000", "image": "./assets/images/splash-icon.png" }
+          "dark": {
+            "backgroundColor": "#000000",
+            "image": "./assets/images/splash-icon.png"
+          }
         }
       ],
       [
@@ -69,15 +88,19 @@
           "photosPermission": "Rolo lets you pick photos and videos to add to shared albums. It only uploads what you choose.",
           "savePhotosPermission": "Rolo saves photos from your shared albums to your library, in original quality.",
           "isAccessMediaLocationEnabled": true,
-          "preventAutomaticLimitedAccessAlert": true
+          "preventAutomaticLimitedAccessAlert": true,
+          "granularPermissions": [
+            "photo",
+            "video"
+          ]
         }
       ],
       [
         "expo-image-picker",
         {
           "photosPermission": "Rolo lets you pick photos and videos to add to shared albums. It only uploads what you choose.",
-          "cameraPermission": false,
-          "microphonePermission": false
+          "microphonePermission": false,
+          "cameraPermission": "Rolo uses the camera only to scan album invite QR codes."
         }
       ],
       [
@@ -89,11 +112,41 @@
           "barcodeScannerEnabled": true
         }
       ],
-      ["expo-video", { "supportsBackgroundPlayback": false, "supportsPictureInPicture": false }],
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": false,
+          "supportsPictureInPicture": false
+        }
+      ],
       "expo-background-task",
-      ["expo-notifications", { "color": "#CC3D25" }],
-      ["expo-secure-store", { "faceIDPermission": false }],
-      ["expo-localization", { "supportedLocales": { "ios": ["en", "pt-BR"], "android": ["en", "pt-BR"] } }]
+      [
+        "expo-notifications",
+        {
+          "color": "#CC3D25"
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": false
+        }
+      ],
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": [
+              "en",
+              "pt-BR"
+            ],
+            "android": [
+              "en",
+              "pt-BR"
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false,

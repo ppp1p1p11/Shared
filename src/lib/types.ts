@@ -58,6 +58,7 @@ export type Media = {
   kind: MediaKind;
   storage_path: string;
   thumb_path: string | null;
+  preview_path: string | null;
   thumbhash: string | null;
   mime_type: string;
   width: number | null;

@@ -266,6 +266,7 @@ const ptBR: Catalog = {
     saved_other: '{{count}} itens salvos em “{{album}}”',
     failed: 'Não deu para salvar alguns itens. Confira sua conexão e tente de novo.',
     nothingFromOthers: 'Tudo aqui é seu. Não tem mais nada para salvar.',
+    shareTooMany: 'Dá para compartilhar até {{count}} de uma vez. Quer salvar no celular?',
   },
   settingsAlbum: {
     title: 'Ajustes do álbum',

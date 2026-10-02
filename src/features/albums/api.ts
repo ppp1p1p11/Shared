@@ -159,11 +159,11 @@ export function useRespondToRequest(albumId: string) {
 
 /** Paths of a user's uploads in an album (owner can see all, including hidden). */
 async function uploadPaths(albumId: string, userId?: string) {
-  let q = supabase.from('media').select('storage_path,thumb_path,live_photo_video_path').eq('album_id', albumId);
+  let q = supabase.from('media').select('storage_path,thumb_path,preview_path,live_photo_video_path').eq('album_id', albumId);
   if (userId) q = q.eq('uploader_id', userId);
   const { data, error } = await q;
   if (error) throw new Error(error.message);
-  return (data ?? []).flatMap((m) => [m.storage_path, m.thumb_path, m.live_photo_video_path]).filter(Boolean) as string[];
+  return (data ?? []).flatMap((m) => [m.storage_path, m.thumb_path, m.preview_path, m.live_photo_video_path]).filter(Boolean) as string[];
 }
 
 export function useRemoveMember(albumId: string) {

@@ -269,6 +269,7 @@ const en = {
     saved_other: 'Saved {{count}} items to “{{album}}”',
     failed: 'Couldn’t save some items. Check your connection and try again.',
     nothingFromOthers: 'Everything here is yours. Nothing else to save.',
+    shareTooMany: 'You can share up to {{count}} at a time. Save them to your phone instead?',
   },
   settingsAlbum: {
     title: 'Album settings',

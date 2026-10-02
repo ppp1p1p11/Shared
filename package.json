@@ -81,7 +81,20 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "jest",
+    "test:server": "tsx --test tests/server/*.test.ts",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p tests/server",
+    "e2e:web": "node scripts/e2e-web.mjs"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "testMatch": [
+      "<rootDir>/tests/unit/**/*.test.ts?(x)"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  }
 }

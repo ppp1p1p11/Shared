@@ -1,4 +1,5 @@
 import '@/i18n';
+import '@/features/upload/background';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider as NavThemeProvider } from 'expo-router';

@@ -37,8 +37,8 @@ export function createSupabaseProvider(opts: {
       if (error) throw new UploadHttpError((error as any).statusCode ? Number((error as any).statusCode) : 500, error.message);
     },
 
-    imageSource(path: string): ImageSourceSpec | null {
-      const token = opts.peekToken();
+    imageSource(path: string, explicitToken?: string): ImageSourceSpec | null {
+      const token = explicitToken ?? opts.peekToken();
       if (!token) return null;
       return {
         uri: `${opts.url}/storage/v1/object/authenticated/${MEDIA_BUCKET}/${path}`,
